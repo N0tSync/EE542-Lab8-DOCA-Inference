@@ -1,0 +1,239 @@
+{
+  "metadata": {
+    "timestamp": "2026-10-24T10:15:27.671993-07:00",
+    "gpu": "NVIDIA GeForce RTX 5080",
+    "compute_capability": [
+      12,
+      0
+    ],
+    "python_torch": "2.10.0+cu130",
+    "torchvision": "0.25.0+cu130",
+    "cuda_runtime": "13.0",
+    "tensorrt": "11.0.0.114",
+    "weights": "ResNet18_Weights.IMAGENET1K_V1",
+    "seed": 542,
+    "warmup": 50,
+    "iterations": 200,
+    "tf32_matmul": false,
+    "tf32_cudnn": false,
+    "cudnn_benchmark": false,
+    "timing": "CUDA events per forward on one non-default stream; eager execution, no CUDA graphs",
+    "excluded": [
+      "model loading",
+      "engine building",
+      "H2D",
+      "preprocessing",
+      "FP16 input conversion"
+    ],
+    "input": "Seeded Gaussian GPU input; FP16 is converted from the same FP32 input",
+    "accuracy_note": "Top-1 agreement on random inputs is not ImageNet accuracy",
+    "engines": {
+      "fp32": {
+        "engine": "models/resnet18_fp32.engine",
+        "sha256": "141073c9743c8940fc7b3d4936b1f591f1bed07243dab9d57b89652c3f831106",
+        "tensorrt": "11.0.0.114",
+        "gpu": "NVIDIA GeForce RTX 5080",
+        "compute_capability": [
+          12,
+          0
+        ],
+        "precision": "fp32",
+        "tf32": false,
+        "workspace_gib": 2,
+        "build_seconds": 7.402668776005157,
+        "profile_min_opt_max": [
+          [
+            1,
+            3,
+            224,
+            224
+          ],
+          [
+            8,
+            3,
+            224,
+            224
+          ],
+          [
+            32,
+            3,
+            224,
+            224
+          ]
+        ],
+        "io": [
+          {
+            "name": "input",
+            "dtype": "DataType.FLOAT",
+            "shape": [
+              -1,
+              3,
+              224,
+              224
+            ],
+            "format": "TensorFormat.LINEAR"
+          },
+          {
+            "name": "logits",
+            "dtype": "DataType.FLOAT",
+            "shape": [
+              -1,
+              1000
+            ],
+            "format": "TensorFormat.LINEAR"
+          }
+        ],
+        "weights": "ResNet18_Weights.IMAGENET1K_V1"
+      },
+      "fp16": {
+        "engine": "models/resnet18_fp16.engine",
+        "sha256": "78a040867668b0d063f63cb0c36dd1c05206a5b984015caecd281eadf8a95912",
+        "tensorrt": "11.0.0.114",
+        "gpu": "NVIDIA GeForce RTX 5080",
+        "compute_capability": [
+          12,
+          0
+        ],
+        "precision": "fp16",
+        "tf32": false,
+        "workspace_gib": 2,
+        "build_seconds": 6.652398610996897,
+        "profile_min_opt_max": [
+          [
+            1,
+            3,
+            224,
+            224
+          ],
+          [
+            8,
+            3,
+            224,
+            224
+          ],
+          [
+            32,
+            3,
+            224,
+            224
+          ]
+        ],
+        "io": [
+          {
+            "name": "input",
+            "dtype": "DataType.HALF",
+            "shape": [
+              -1,
+              3,
+              224,
+              224
+            ],
+            "format": "TensorFormat.LINEAR"
+          },
+          {
+            "name": "logits",
+            "dtype": "DataType.HALF",
+            "shape": [
+              -1,
+              1000
+            ],
+            "format": "TensorFormat.LINEAR"
+          }
+        ],
+        "weights": "ResNet18_Weights.IMAGENET1K_V1"
+      }
+    }
+  },
+  "results": [
+    {
+      "implementation": "pytorch_fp32",
+      "batch": 1,
+      "latency_ms": 1.6209492790699005,
+      "latency_std_ms": 0.589581430402272,
+      "throughput_images_s": 616.92244964864,
+      "speedup_vs_pytorch": 1.0,
+      "max_abs_logit_diff": 0.0,
+      "top1_agreement": 1.0
+    },
+    {
+      "implementation": "tensorrt_fp32",
+      "batch": 1,
+      "latency_ms": 0.9888827157020569,
+      "latency_std_ms": 0.13849337075325066,
+      "throughput_images_s": 1011.2422677850633,
+      "speedup_vs_pytorch": 1.6391724249312096,
+      "max_abs_logit_diff": 7.62939453125e-06,
+      "top1_agreement": 1.0
+    },
+    {
+      "implementation": "tensorrt_fp16",
+      "batch": 1,
+      "latency_ms": 0.2834307196736336,
+      "latency_std_ms": 0.06896949019418196,
+      "throughput_images_s": 3528.199064489148,
+      "speedup_vs_pytorch": 5.719031729998782,
+      "max_abs_logit_diff": 0.026525020599365234,
+      "top1_agreement": 1.0
+    },
+    {
+      "implementation": "pytorch_fp32",
+      "batch": 8,
+      "latency_ms": 4.511080628633499,
+      "latency_std_ms": 0.32833499851859205,
+      "throughput_images_s": 1773.4109980701826,
+      "speedup_vs_pytorch": 1.0,
+      "max_abs_logit_diff": 0.0,
+      "top1_agreement": 1.0
+    },
+    {
+      "implementation": "tensorrt_fp32",
+      "batch": 8,
+      "latency_ms": 1.5687961560487746,
+      "latency_std_ms": 0.1707081260526517,
+      "throughput_images_s": 5099.451556631221,
+      "speedup_vs_pytorch": 2.8755046417217556,
+      "max_abs_logit_diff": 1.049041748046875e-05,
+      "top1_agreement": 1.0
+    },
+    {
+      "implementation": "tensorrt_fp16",
+      "batch": 8,
+      "latency_ms": 0.3723904007673264,
+      "latency_std_ms": 0.07302040561802506,
+      "throughput_images_s": 21482.83087726122,
+      "speedup_vs_pytorch": 12.113847777327836,
+      "max_abs_logit_diff": 0.020023584365844727,
+      "top1_agreement": 1.0
+    },
+    {
+      "implementation": "pytorch_fp32",
+      "batch": 32,
+      "latency_ms": 8.447751994132995,
+      "latency_std_ms": 0.47354265744018614,
+      "throughput_images_s": 3787.9899909732385,
+      "speedup_vs_pytorch": 1.0,
+      "max_abs_logit_diff": 0.0,
+      "top1_agreement": 1.0
+    },
+    {
+      "implementation": "tensorrt_fp32",
+      "batch": 32,
+      "latency_ms": 4.809388484954834,
+      "latency_std_ms": 0.3417713806017981,
+      "throughput_images_s": 6653.6525589698795,
+      "speedup_vs_pytorch": 1.7565127085408094,
+      "max_abs_logit_diff": 8.225440979003906e-06,
+      "top1_agreement": 1.0
+    },
+    {
+      "implementation": "tensorrt_fp16",
+      "batch": 32,
+      "latency_ms": 1.1147752016782762,
+      "latency_std_ms": 0.13325969589939762,
+      "throughput_images_s": 28705.338934544394,
+      "speedup_vs_pytorch": 7.577987007080028,
+      "max_abs_logit_diff": 0.025202274322509766,
+      "top1_agreement": 0.96875
+    }
+  ]
+}

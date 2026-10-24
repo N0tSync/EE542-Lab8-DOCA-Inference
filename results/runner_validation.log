@@ -1,0 +1,11 @@
+PASS fp32: batch 1, output reuse and stream handoff
+PASS fp32: batch 8, output reuse and stream handoff
+PASS fp32: batch 32, output reuse and stream handoff
+PASS fp32: batch 1, output reuse and stream handoff
+PASS fp32: CPU, dtype, layout, batch range, output shape rejection
+PASS fp16: batch 1, output reuse and stream handoff
+PASS fp16: batch 8, output reuse and stream handoff
+PASS fp16: batch 32, output reuse and stream handoff
+PASS fp16: batch 1, output reuse and stream handoff
+PASS fp16: CPU, dtype, layout, batch range, output shape rejection
+All TensorRT runner checks passed.

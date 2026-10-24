@@ -1,0 +1,9 @@
+pytorch_fp32     batch= 1  1.6209 ms       616.9 images/s  1.00x  max_diff=0  top1=100.0%
+tensorrt_fp32    batch= 1  0.9889 ms      1011.2 images/s  1.64x  max_diff=7.62939e-06  top1=100.0%
+tensorrt_fp16    batch= 1  0.2834 ms      3528.2 images/s  5.72x  max_diff=0.026525  top1=100.0%
+pytorch_fp32     batch= 8  4.5111 ms      1773.4 images/s  1.00x  max_diff=0  top1=100.0%
+tensorrt_fp32    batch= 8  1.5688 ms      5099.5 images/s  2.88x  max_diff=1.04904e-05  top1=100.0%
+tensorrt_fp16    batch= 8  0.3724 ms     21482.8 images/s  12.11x  max_diff=0.0200236  top1=100.0%
+pytorch_fp32     batch=32  8.4478 ms      3788.0 images/s  1.00x  max_diff=0  top1=100.0%
+tensorrt_fp32    batch=32  4.8094 ms      6653.7 images/s  1.76x  max_diff=8.22544e-06  top1=100.0%
+tensorrt_fp16    batch=32  1.1148 ms     28705.3 images/s  7.58x  max_diff=0.0252023  top1=96.9%

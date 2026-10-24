@@ -1,0 +1,102 @@
+{
+  "timestamp": "2026-10-24T10:10:33.531590-07:00",
+  "python": "3.12.13 | packaged by Anaconda, Inc. | (main, Mar 19 2026, 20:20:58) [GCC 14.3.0]",
+  "python_executable": "/home/n0tsync/miniconda3/envs/ee542-lab8/bin/python",
+  "kernel": "6.6.87.2-microsoft-standard-WSL2",
+  "os_release": {
+    "NAME": "Ubuntu",
+    "ID": "ubuntu",
+    "PRETTY_NAME": "Ubuntu 24.04.4 LTS",
+    "VERSION_ID": "24.04",
+    "VERSION": "24.04.4 LTS (Noble Numbat)",
+    "VERSION_CODENAME": "noble",
+    "ID_LIKE": "debian",
+    "HOME_URL": "https://www.ubuntu.com/",
+    "SUPPORT_URL": "https://help.ubuntu.com/",
+    "BUG_REPORT_URL": "https://bugs.launchpad.net/ubuntu/",
+    "PRIVACY_POLICY_URL": "https://www.ubuntu.com/legal/terms-and-policies/privacy-policy",
+    "UBUNTU_CODENAME": "noble",
+    "LOGO": "ubuntu-logo"
+  },
+  "cuda_runtime": "13.0",
+  "packages": {
+    "torch": "2.10.0+cu130",
+    "torchvision": "0.25.0+cu130",
+    "tensorrt-cu13": "11.0.0.114",
+    "onnx": "1.23.2",
+    "onnxscript": "0.7.2",
+    "numpy": "2.5.2",
+    "scapy": "2.8.0"
+  },
+  "tools": {
+    "nvcc": "/usr/local/cuda-13.0/bin/nvcc",
+    "cc": "/usr/bin/cc",
+    "pkg-config": "/usr/bin/pkg-config",
+    "meson": null,
+    "ninja": null
+  },
+  "gpu": {
+    "name": "NVIDIA GeForce RTX 5080",
+    "compute_capability": [
+      12,
+      0
+    ],
+    "total_memory_bytes": 17094475776,
+    "matmul_finite": true,
+    "tensorrt_builder": true
+  },
+  "checks": {
+    "nvidia_smi": {
+      "command": "nvidia-smi",
+      "returncode": 0,
+      "output": "Sat Oct 24 10:10:32 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 610.57.01              KMD Version: 610.88        CUDA UMD Version: 13.3     |\n+-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  NVIDIA GeForce RTX 5080        On  |   00000000:01:00.0  On |                  N/A |\n|  0%   48C    P0             39W /  360W |    3872MiB /  16303MiB |      3%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n\n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI              PID   Type   Process name                        GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|  No running processes found                                                             |\n+-----------------------------------------------------------------------------------------+"
+    },
+    "nvcc": {
+      "command": "nvcc --version",
+      "returncode": 0,
+      "output": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Wed_Aug_20_01:58:59_PM_PDT_2025\nCuda compilation tools, release 13.0, V13.0.88\nBuild cuda_13.0.r13.0/compiler.36424714_0"
+    },
+    "dpdk": {
+      "command": "pkg-config --modversion libdpdk",
+      "returncode": 0,
+      "output": "23.11.4"
+    },
+    "libpcap": {
+      "command": "pkg-config --modversion libpcap",
+      "returncode": 0,
+      "output": "1.10.4"
+    },
+    "libibverbs": {
+      "command": "pkg-config --modversion libibverbs",
+      "returncode": 0,
+      "output": "1.14.50.0"
+    },
+    "pip_check": {
+      "command": "/home/n0tsync/miniconda3/envs/ee542-lab8/bin/python -m pip check",
+      "returncode": 0,
+      "output": "No broken requirements found."
+    },
+    "compiler": {
+      "command": "g++ --version",
+      "returncode": 0,
+      "output": "g++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE."
+    },
+    "system_packages": {
+      "command": "dpkg-query -W '-f=${Package} ${Version}\n' build-essential pkg-config dpdk dpdk-dev libdpdk-dev libpcap-dev rdma-core libibverbs-dev ibverbs-utils cuda-toolkit-13-0",
+      "returncode": 0,
+      "output": "build-essential 12.10ubuntu1\ncuda-toolkit-13-0 13.0.3-1\ndpdk 23.11.4-0ubuntu0.24.04.2\ndpdk-dev 23.11.4-0ubuntu0.24.04.2\nibverbs-utils 50.0-2ubuntu0.2\nlibdpdk-dev 23.11.4-0ubuntu0.24.04.2\nlibibverbs-dev 50.0-2ubuntu0.2\nlibpcap-dev 1.10.4-4.1ubuntu3.1\npkg-config 1.8.1-2build1\nrdma-core 50.0-2ubuntu0.2"
+    },
+    "dpdk_compile": {
+      "command": "cc /tmp/tmp3q3_ggbh/dpdk_check.c -o /tmp/tmp3q3_ggbh/dpdk_check -I/usr/include/dpdk -I/usr/include/dpdk/../x86_64-linux-gnu/dpdk -include rte_config.h -march=corei7 -mrtm -I/usr/include/x86_64-linux-gnu -I/usr/include/libnl3 -I/usr/include/dbus-1.0 -I/usr/lib/x86_64-linux-gnu/dbus-1.0/include -Wl,--as-needed -lrte_node -lrte_graph -lrte_pipeline -lrte_table -lrte_pdump -lrte_port -lrte_fib -lrte_pdcp -lrte_ipsec -lrte_vhost -lrte_stack -lrte_security -lrte_sched -lrte_reorder -lrte_rib -lrte_mldev -lrte_regexdev -lrte_rawdev -lrte_power -lrte_pcapng -lrte_member -lrte_lpm -lrte_latencystats -lrte_jobstats -lrte_ip_frag -lrte_gso -lrte_gro -lrte_gpudev -lrte_dispatcher -lrte_eventdev -lrte_efd -lrte_dmadev -lrte_distributor -lrte_cryptodev -lrte_compressdev -lrte_cfgfile -lrte_bpf -lrte_bitratestats -lrte_bbdev -lrte_acl -lrte_timer -lrte_hash -lrte_metrics -lrte_cmdline -lrte_pci -lrte_ethdev -lrte_meter -lrte_net -lrte_mbuf -lrte_mempool -lrte_rcu -lrte_ring -lrte_eal -lrte_telemetry -lrte_kvargs -lrte_log -lbsd",
+      "returncode": 0,
+      "output": ""
+    },
+    "dpdk_link_run": {
+      "command": "/tmp/tmp3q3_ggbh/dpdk_check",
+      "returncode": 0,
+      "output": "DPDK 23.11.4"
+    }
+  },
+  "passed": true,
+  "scope": "Part 1 development environment; DPDK packet RX and DOCA are separate team tasks"
+}
