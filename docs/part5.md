@@ -1,6 +1,6 @@
 # Part 5: received-image classification and H2D measurement
 
-`classify_frames.py` connects the Parts 3-4 raw RGB outputs to the Part 2 FP16
+`lab8/integration/classify_frames.py` connects the Parts 3-4 raw RGB outputs to the Part 2 FP16
 runner. It uses the existing pretrained ResNet-18 engine, without model training.
 All steps below were validated on RTX 5080 under Ubuntu WSL2.
 
@@ -8,11 +8,11 @@ All steps below were validated on RTX 5080 under Ubuntu WSL2.
 
 Each input holds 16 RGB uint8 HWC frames of shape 224x224x3, ordered by frame ID,
 with no file header. Each file must contain exactly 2,408,448 bytes.
-The defaults are `frames_original.bin`, `frames_rx_inorder.bin`,
+Files are stored in `data/frames/`. The defaults are `frames_original.bin`, `frames_rx_inorder.bin`,
 `frames_rx_shuffled.bin`, and `frames_rx_messy.bin`. The existing `make run`
 also copies the shuffled result to `frames_rx.bin` for a single-file handoff.
 
-Outputs in `results/`:
+Outputs in `results/part5/`:
 
 | File | Contents |
 | --- | --- |
@@ -33,11 +33,11 @@ are required beyond the recorded dependencies.
 
 ```bash
 conda activate ee542-lab8
-mkdir -p results
+mkdir -p results/part34 results/part5
 set -o pipefail
-python -u test_packet_pipeline.py --dpdk 2>&1 | tee results/part34_regression.log
-make run SUDO= 2>&1 | tee results/part34_validation.log
-python -u classify_frames.py --warmup 50 --iterations 200 2>&1 | tee results/part5.log
+python -u -m tests.test_packet_pipeline --dpdk 2>&1 | tee results/part34/part34_regression.log
+make run SUDO= 2>&1 | tee results/part34/part34_validation.log
+python -u -m lab8.integration.classify_frames --warmup 50 --iterations 200 2>&1 | tee results/part5/part5.log
 ```
 
 `SUDO=` was sufficient for the pcap virtual port on the measured WSL host. On
@@ -45,11 +45,13 @@ hosts requiring elevated DPDK access, use the default `make run` instead. Make
 stops if reassembly or byte verification fails. A convenient combined command
 after the engine is available is `make part5 SUDO=`. The `PYTHON` and `EAL`
 Makefile variables can be overridden for other environments.
+Use `PART5_OUTPUT=results/validation/part5` with `make part5` to keep a
+verification run separate from the original measurements.
 
 For a single received file:
 
 ```bash
-python classify_frames.py --received frames_rx.bin
+python -m lab8.integration.classify_frames --received data/frames/frames_rx.bin
 ```
 
 `--original`, `--received`, `--engine`, `--output-dir`, `--num-frames`,
@@ -98,10 +100,10 @@ The three normal DPDK inputs are verified independently before classification.
 Additional GPU checks covered analytic black/white normalization, a one-byte
 input mismatch with unchanged class labels, and truncated-file rejection.
 
-See [measured results](../results/part5_results.md),
-[packet regression output](../results/part34_regression.log),
-[DPDK validation](../results/part34_validation.log), and
-[Part 5 checks](../results/part5_validation.log).
+See [measured results](../results/part5/part5_results.md),
+[packet regression output](../results/part34/part34_regression.log),
+[DPDK validation](../results/part34/part34_validation.log), and
+[Part 5 checks](../results/part5/part5_validation.log).
 
 The assignment permits WSL2 for Parts 1-5. Part 6 specifies a full GPU cloud VM.
 GPU containers can also be developed locally using the WSL2 backend, as

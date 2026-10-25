@@ -1,9 +1,10 @@
 /* Parts 3-4 (member B): receive image packets with DPDK from a pcap virtual port and rebuild the images.
  *
- * Build:  make            (or: gcc -O2 -Wall $(pkg-config --cflags libdpdk) dpdk_rx.c -o dpdk_rx $(pkg-config --libs libdpdk))
+ * Build from repository root: make
  * Run:
- *   sudo ./dpdk_rx -l 0 --no-huge -m 512 --no-pci \
- *        --vdev 'net_pcap0,rx_pcap=images.pcap,tx_pcap=/dev/null' -- frames_rx.bin [n_frames] [udp_port] [idle_ms]
+ *   sudo ./build/dpdk_rx -l 0 --no-huge -m 512 --no-pci \
+ *        --vdev 'net_pcap0,rx_pcap=data/pcaps/images.pcap,tx_pcap=/dev/null' \
+ *        -- data/frames/frames_rx.bin [n_frames] [udp_port] [idle_ms]
  *   defaults: n_frames 16, udp_port 5000, idle_ms 500
  *
  * Output: frames_rx.bin = raw RGB bytes of frames 0..n_frames-1 back to back (224 x 224 x 3 each),
@@ -32,7 +33,7 @@ int main(int argc, char **argv)
     /* After rte_eal_init, argv[ret] is the program name, so our first argument is argv[ret + 1]. */
     argc -= ret;
     argv += ret;
-    const char *out_path = argc > 1 ? argv[1] : "frames_rx.bin";
+    const char *out_path = argc > 1 ? argv[1] : "data/frames/frames_rx.bin";
     uint32_t n_frames  = argc > 2 ? (uint32_t)atoi(argv[2]) : 16;
     uint16_t port_udp  = argc > 3 ? (uint16_t)atoi(argv[3]) : 5000;
     unsigned idle_ms   = argc > 4 ? (unsigned)atoi(argv[4]) : 500;

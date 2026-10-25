@@ -9,12 +9,12 @@ working on Parts 1-6. This implementation uses an RTX 5080 under WSL2, with the
 
 | File | Purpose |
 | --- | --- |
-| `check_env.py` | Record versions, check Python dependencies, GPU math, TensorRT Builder, and DPDK compilation/linking |
-| `export_onnx.py` | Export pretrained ResNet-18 as FP32 and FP16 ONNX, opset 18, dynamic batch |
-| `build_engine.py` | Build and inspect TensorRT 11 engines with batch profile min/opt/max = 1/8/32 |
-| `trt_runner.py` | Reusable CUDA tensor input/output runner with stream ordering |
-| `test_trt_runner.py` | GPU checks for dynamic shapes, buffer reuse, stream handoff, and invalid input rejection |
-| `benchmark.py` | Compare PyTorch FP32, TensorRT FP32, and TensorRT FP16 at batches 1, 8, 32 |
+| `lab8/check_env.py` | Record versions, check Python dependencies, GPU math, TensorRT Builder, and DPDK compilation/linking |
+| `lab8/inference/export_onnx.py` | Export pretrained ResNet-18 as FP32 and FP16 ONNX, opset 18, dynamic batch |
+| `lab8/inference/build_engine.py` | Build and inspect TensorRT 11 engines with batch profile min/opt/max = 1/8/32 |
+| `lab8/inference/trt_runner.py` | Reusable CUDA tensor input/output runner with stream ordering |
+| `tests/test_trt_runner.py` | GPU checks for dynamic shapes, buffer reuse, stream handoff, and invalid input rejection |
+| `lab8/inference/benchmark.py` | Compare PyTorch FP32, TensorRT FP32, and TensorRT FP16 at batches 1, 8, 32 |
 | `requirements-lock.txt` | Full Python package snapshot from the validated environment |
 | `docs/environment.md` | Host configuration, installation, checks, and limitations |
 | `results/` | Measured CSV/JSON results and actual execution logs |
@@ -51,20 +51,20 @@ weights into `models/torch_cache/`. Keep both `.onnx` and `.onnx.data` files whe
 moving the models. Engines, weights, and caches are ignored by Git.
 
 ```bash
-mkdir -p results
+mkdir -p results/environment results/part2
 set -o pipefail
-python -u check_env.py 2>&1 | tee results/environment.log
-python -u export_onnx.py 2>&1 | tee results/export_onnx.log
-python -u build_engine.py 2>&1 | tee results/build_engine.log
-python -u test_trt_runner.py 2>&1 | tee results/runner_validation.log
-python -u benchmark.py --warmup 50 --iterations 200 --seed 542 2>&1 | tee results/benchmark.log
+python -u -m lab8.check_env 2>&1 | tee results/environment/environment.log
+python -u -m lab8.inference.export_onnx 2>&1 | tee results/part2/export_onnx.log
+python -u -m lab8.inference.build_engine 2>&1 | tee results/part2/build_engine.log
+python -u -m tests.test_trt_runner 2>&1 | tee results/part2/runner_validation.log
+python -u -m lab8.inference.benchmark --warmup 50 --iterations 200 --seed 542 2>&1 | tee results/part2/benchmark.log
 ```
 
 Check each command's exit status before continuing. The output engines are
 `models/resnet18_fp32.engine` and `models/resnet18_fp16.engine`. Each has an
 `.engine.json` sidecar with its hash, build configuration, profile, and I/O types.
-The benchmark verifies these sidecars and writes `results/part2_benchmark.csv`
-and `results/part2_summary.json`. Rebuild engines on the deployment GPU with the
+The benchmark verifies these sidecars and writes `results/part2/part2_benchmark.csv`
+and `results/part2/part2_summary.json`. Rebuild engines on the deployment GPU with the
 matching TensorRT version; the RTX 5080 plans are specific to this environment.
 
 ## Benchmark method
@@ -86,13 +86,13 @@ PyTorch result.
 
 Numerical checks report maximum absolute logit error and top-1 agreement using
 the same input values. Random-input agreement is not ImageNet classification
-accuracy. See [measured results](../results/part2_results.md) for this machine.
+accuracy. See [measured results](../results/part2/part2_results.md) for this machine.
 
 ## Runner interface for Part 5
 
 ```python
 import torch
-from trt_runner import TensorRTRunner
+from lab8.inference.trt_runner import TensorRTRunner
 
 runner = TensorRTRunner("models/resnet18_fp16.engine")
 # Example input; Part 5 supplies the GPU-preprocessed RGB tensor.
@@ -120,7 +120,7 @@ that producer first. If another stream consumes logits, make it wait for the
 caller stream and use `logits.record_stream(consumer)` for allocator safety.
 See the class docstring for the complete lifetime contract.
 
-Part 5 preprocessing is implemented in `classify_frames.py`. RGB uint8 HWC data
+Part 5 preprocessing is implemented in `lab8/integration/classify_frames.py`. RGB uint8 HWC data
 becomes NCHW on GPU, then the full `IMAGENET1K_V1.transforms()` preset resizes
 the short side to 256, center crops to 224, scales by 1/255, and normalizes with
 mean `[0.485, 0.456, 0.406]` and std `[0.229, 0.224, 0.225]`. It then casts to

@@ -1,9 +1,8 @@
-models/
+/models/
+/build/
+/data/pcaps/
+/data/frames/
+/data/previews/
+/data/cifar10/
 __pycache__/
 *.pyc
-/dpdk_rx
-/pcap_replay_test
-/images*.pcap
-/frames_original.bin
-/frames_rx*.bin
-/originals/

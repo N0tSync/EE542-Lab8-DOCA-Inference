@@ -49,7 +49,7 @@ of CPU inputs, wrong dtype/layout, out-of-range batch, and wrong output shape.
 Raw records: [CSV](part2_benchmark.csv), [JSON with build metadata](part2_summary.json),
 [benchmark log](benchmark.log), [runner validation](runner_validation.log),
 [build log](build_engine.log), and [ONNX export log](export_onnx.log).
-See [environment checks](environment.json) and [usage](../docs/part2.md).
+See [environment checks](../environment/environment.json) and [usage](../../docs/part2.md).
 
 Parts 3-6 integration and DOCA validation are outside these measurements.
 Rebuild the engines on the destination GPU and TensorRT installation.

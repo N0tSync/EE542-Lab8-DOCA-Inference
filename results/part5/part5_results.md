@@ -46,12 +46,12 @@ GPU preprocessing matched analytic black/white inputs. A one-byte corruption
 with unchanged class labels correctly failed byte validation; a truncated file
 was rejected before inference. See [GPU checks](part5_validation.log).
 
-The initial packet review is retained in [part34_review.md](part34_review.md);
-its two findings are resolved by the current working tree.
+The initial packet review is retained in [part34_review.md](../part34/part34_review.md);
+its two findings were resolved in commit `a836611`.
 
 Raw records: [classification CSV](part5_classification.csv), [H2D CSV](part5_h2d.csv),
 [JSON](part5_summary.json), [classification log](part5.log),
-[packet regressions](part34_regression.log), and [DPDK log](part34_validation.log).
-Commands and scope are in the [Part 5 guide](../docs/part5.md).
+[packet regressions](../part34/part34_regression.log), and [DPDK log](../part34/part34_validation.log).
+Commands and scope are in the [Part 5 guide](../../docs/part5.md).
 
 Part 6 Docker/DOCA and Part 7 RDMA tests remain outside these results.

@@ -16,7 +16,7 @@ import torch
 import torchvision
 from torchvision.models import ResNet18_Weights
 
-from trt_runner import TensorRTRunner
+from lab8.inference.trt_runner import TensorRTRunner
 
 FRAME_SHAPE = (224, 224, 3)
 FRAME_BYTES = 224 * 224 * 3
@@ -160,14 +160,14 @@ def classify(args):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--original", type=Path, default=Path("frames_original.bin"))
-    parser.add_argument("--received", type=Path, nargs="+", default=[Path(f"frames_rx_{mode}.bin")
+    parser.add_argument("--original", type=Path, default=Path("data/frames/frames_original.bin"))
+    parser.add_argument("--received", type=Path, nargs="+", default=[Path(f"data/frames/frames_rx_{mode}.bin")
                         for mode in ("inorder", "shuffled", "messy")])
     parser.add_argument("--engine", type=Path, default=Path("models/resnet18_fp16.engine"))
     parser.add_argument("--num-frames", type=int, default=16)
     parser.add_argument("--warmup", type=int, default=50)
     parser.add_argument("--iterations", type=int, default=200)
-    parser.add_argument("--output-dir", type=Path, default=Path("results"))
+    parser.add_argument("--output-dir", type=Path, default=Path("results/part5"))
     args = parser.parse_args()
     if not 1 <= args.num_frames <= 32 or args.warmup < 1 or args.iterations < 1:
         parser.error("Expected 1-32 frames and positive warmup/iterations")

@@ -1,7 +1,7 @@
 # Part 1 environment
 
 Measured on 2026-10-24, America/Los_Angeles. Raw checks are saved in
-[`results/environment.json`](../results/environment.json) and its log.
+[`results/environment/environment.json`](../results/environment/environment.json) and its log.
 
 | Component | Observed value |
 | --- | --- |

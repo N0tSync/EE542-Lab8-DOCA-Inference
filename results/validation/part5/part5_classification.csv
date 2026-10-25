@@ -1,0 +1,49 @@
+received_file,frame_id,bytes_identical,original_class_id,received_class_id,original_class,received_class,class_agreement,max_abs_logit_diff
+data/frames/frames_rx_inorder.bin,0,True,723,723,pinwheel,pinwheel,True,0.0
+data/frames/frames_rx_inorder.bin,1,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_inorder.bin,2,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_inorder.bin,3,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_inorder.bin,4,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_inorder.bin,5,True,644,644,matchstick,matchstick,True,0.0
+data/frames/frames_rx_inorder.bin,6,True,530,530,digital clock,digital clock,True,0.0
+data/frames/frames_rx_inorder.bin,7,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_inorder.bin,8,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_inorder.bin,9,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_inorder.bin,10,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_inorder.bin,11,True,644,644,matchstick,matchstick,True,0.0
+data/frames/frames_rx_inorder.bin,12,True,494,494,chime,chime,True,0.0
+data/frames/frames_rx_inorder.bin,13,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_inorder.bin,14,True,723,723,pinwheel,pinwheel,True,0.0
+data/frames/frames_rx_inorder.bin,15,True,723,723,pinwheel,pinwheel,True,0.0
+data/frames/frames_rx_shuffled.bin,0,True,723,723,pinwheel,pinwheel,True,0.0
+data/frames/frames_rx_shuffled.bin,1,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_shuffled.bin,2,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_shuffled.bin,3,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_shuffled.bin,4,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_shuffled.bin,5,True,644,644,matchstick,matchstick,True,0.0
+data/frames/frames_rx_shuffled.bin,6,True,530,530,digital clock,digital clock,True,0.0
+data/frames/frames_rx_shuffled.bin,7,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_shuffled.bin,8,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_shuffled.bin,9,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_shuffled.bin,10,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_shuffled.bin,11,True,644,644,matchstick,matchstick,True,0.0
+data/frames/frames_rx_shuffled.bin,12,True,494,494,chime,chime,True,0.0
+data/frames/frames_rx_shuffled.bin,13,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_shuffled.bin,14,True,723,723,pinwheel,pinwheel,True,0.0
+data/frames/frames_rx_shuffled.bin,15,True,723,723,pinwheel,pinwheel,True,0.0
+data/frames/frames_rx_messy.bin,0,True,723,723,pinwheel,pinwheel,True,0.0
+data/frames/frames_rx_messy.bin,1,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_messy.bin,2,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_messy.bin,3,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_messy.bin,4,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_messy.bin,5,True,644,644,matchstick,matchstick,True,0.0
+data/frames/frames_rx_messy.bin,6,True,530,530,digital clock,digital clock,True,0.0
+data/frames/frames_rx_messy.bin,7,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_messy.bin,8,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_messy.bin,9,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_messy.bin,10,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_messy.bin,11,True,644,644,matchstick,matchstick,True,0.0
+data/frames/frames_rx_messy.bin,12,True,494,494,chime,chime,True,0.0
+data/frames/frames_rx_messy.bin,13,True,767,767,rubber eraser,rubber eraser,True,0.0
+data/frames/frames_rx_messy.bin,14,True,723,723,pinwheel,pinwheel,True,0.0
+data/frames/frames_rx_messy.bin,15,True,723,723,pinwheel,pinwheel,True,0.0

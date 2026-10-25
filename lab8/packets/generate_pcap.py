@@ -8,16 +8,17 @@ IP packet = 20 (IPv4) + 8 (UDP) + 22 (header) + 1,400 = 1,450 bytes <= 1,500-byt
 Ethernet frame = 14 + 1,450 = 1,464 bytes.
 
 Usage:
-    python generate_pcap.py                         # in order        -> images.pcap
-    python generate_pcap.py --shuffle -o shuf.pcap  # shuffled order
-    python generate_pcap.py --shuffle --dups 50 --noise 20 -o messy.pcap
+    python -m lab8.packets.generate_pcap
+    python -m lab8.packets.generate_pcap --shuffle -o data/pcaps/shuffled.pcap
+    python -m lab8.packets.generate_pcap --shuffle --dups 50 --noise 20 -o data/pcaps/messy.pcap
         (adds 50 duplicate chunks and 20 packets to another UDP port, which the receiver must ignore)
 
-Also writes frames_original.bin (the original images, raw RGB back to back) and, with --png, PNG previews.
+Also writes data/frames/frames_original.bin and, with --png, data/previews/ PNGs.
 """
 import argparse
 import random
 import struct
+from pathlib import Path
 
 import numpy as np
 
@@ -34,7 +35,7 @@ def make_images(n, seed=0, source="synthetic"):
     """Return a list of n HWC uint8 images."""
     if source == "cifar":
         import torch, torchvision  # noqa: E401
-        ds = torchvision.datasets.CIFAR10("./data", train=False, download=True)
+        ds = torchvision.datasets.CIFAR10("data/cifar10", train=False, download=True)
         imgs = []
         for i in range(n):
             img = ds[i * 37][0].resize((W, H))   # PIL bilinear upscale 32 -> 224
@@ -100,6 +101,7 @@ def build_frames_manual(payloads):
 
 
 def write_pcap(path, frames):
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
     with open(path, "wb") as f:
         f.write(struct.pack("<IHHiIII", 0xA1B2C3D4, 2, 4, 0, 0, 65535, 1))   # Ethernet linktype
         for i, fr in enumerate(frames):
@@ -109,6 +111,7 @@ def write_pcap(path, frames):
 def write_frames_file(path, imgs):
     """Team format: raw RGB bytes (224 x 224 x 3, HWC, uint8) of frame 0, 1, ... back to back.
     frames_rx.bin from dpdk_rx uses exactly the same layout."""
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
     with open(path, "wb") as f:
         for img in imgs:
             f.write(img.tobytes())
@@ -117,14 +120,14 @@ def write_frames_file(path, imgs):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("-n", "--num-images", type=int, default=16)
-    p.add_argument("-o", "--output", default="images.pcap")
+    p.add_argument("-o", "--output", default="data/pcaps/images.pcap")
     p.add_argument("--shuffle", action="store_true", help="shuffle the packet order")
     p.add_argument("--dups", type=int, default=0, help="add N duplicate chunks")
     p.add_argument("--noise", type=int, default=0, help="add N packets for another UDP port")
     p.add_argument("--seed", type=int, default=0)
     p.add_argument("--source", choices=["synthetic", "cifar"], default="synthetic")
-    p.add_argument("--orig", default="frames_original.bin")
-    p.add_argument("--png", action="store_true", help="also save PNG previews in originals/")
+    p.add_argument("--orig", default="data/frames/frames_original.bin")
+    p.add_argument("--png", action="store_true", help="also save PNG previews in data/previews/")
     p.add_argument("--no-scapy", action="store_true")
     a = p.parse_args()
 
@@ -152,9 +155,9 @@ def main():
     if a.png:
         import os
         from PIL import Image
-        os.makedirs("originals", exist_ok=True)
+        os.makedirs("data/previews", exist_ok=True)
         for i, img in enumerate(imgs):
-            Image.fromarray(img).save(f"originals/frame_{i:02d}.png")
+            Image.fromarray(img).save(f"data/previews/frame_{i:02d}.png")
 
     per_img = (FRAME_BYTES + CHUNK - 1) // CHUNK
     print(f"{a.num_images} images x {FRAME_BYTES:,} bytes, {per_img} packets per image "

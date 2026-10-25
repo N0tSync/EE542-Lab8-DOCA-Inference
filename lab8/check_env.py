@@ -27,7 +27,7 @@ def command(args):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--output", type=Path, default=Path("results/environment.json"))
+    parser.add_argument("--output", type=Path, default=Path("results/environment/environment.json"))
     args = parser.parse_args()
     commands = {
         "nvidia_smi": ["nvidia-smi"], "nvcc": ["nvcc", "--version"],

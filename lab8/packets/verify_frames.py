@@ -3,7 +3,7 @@
 Both files hold raw RGB bytes (224 x 224 x 3) of frame 0, 1, ... back to back.
 
 Usage:
-    python verify_frames.py frames_original.bin frames_rx.bin
+    python -m lab8.packets.verify_frames data/frames/frames_original.bin data/frames/frames_rx.bin
 """
 import sys
 

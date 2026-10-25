@@ -5,7 +5,7 @@ from pathlib import Path
 
 import torch
 
-from trt_runner import TensorRTRunner
+from lab8.inference.trt_runner import TensorRTRunner
 
 
 def rejects(call):

@@ -2,7 +2,7 @@
  * rx_handle() that dpdk_rx uses, then writes frames_rx.bin in the same team format.
  *
  *   make test_rx
- *   ./pcap_replay_test images.pcap frames_rx.bin [n_frames] [udp_port]
+ *   ./build/pcap_replay_test data/pcaps/images.pcap data/frames/frames_rx.bin [n_frames] [udp_port]
  */
 #include "rx_core.h"
 

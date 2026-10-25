@@ -13,7 +13,7 @@ import torch
 import torchvision
 from torchvision.models import ResNet18_Weights, resnet18
 
-from trt_runner import TensorRTRunner
+from lab8.inference.trt_runner import TensorRTRunner
 
 
 def measure(call, stream, warmup, iterations):
@@ -117,7 +117,7 @@ def benchmark(args):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--model-dir", type=Path, default=Path("models"))
-    parser.add_argument("--output-dir", type=Path, default=Path("results"))
+    parser.add_argument("--output-dir", type=Path, default=Path("results/part2"))
     parser.add_argument("--warmup", type=int, default=50)
     parser.add_argument("--iterations", type=int, default=200)
     parser.add_argument("--seed", type=int, default=542)

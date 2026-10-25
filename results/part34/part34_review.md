@@ -1,7 +1,7 @@
 # Parts 3-4 review
 
 Reviewed commit: `3b864f6` on 2026-10-24 (America/Los_Angeles).
-Follow-up: both findings below have been fixed in the working tree. The
+Follow-up: both findings below were fixed in commit `a836611`. The
 [regression checks](part34_regression.log) and [real DPDK rerun](part34_validation.log)
 passed. The original findings and logs are retained as a record of the reviewed commit.
 
@@ -92,4 +92,4 @@ received the expected packets, and passed independent byte comparisons.
 Raw output and the structured test summary are in
 [`part34_review.log`](part34_review.log). PCAPs and binary outputs remain in the
 temporary workspace `/tmp/ee542-lab8-partb-review.SVAs8n`.
-These review records have not been committed or pushed.
+These historical review records and the fixes were committed in `a836611`.

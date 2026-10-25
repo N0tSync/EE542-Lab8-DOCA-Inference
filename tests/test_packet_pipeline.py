@@ -7,9 +7,9 @@ import struct
 import subprocess
 import tempfile
 
-import generate_pcap as gen
+from lab8.packets import generate_pcap as gen
 
-ROOT = Path(__file__).resolve().parent
+ROOT = Path(__file__).resolve().parents[1]
 
 
 def invoke(args, cwd):
@@ -42,9 +42,9 @@ def main():
             for receiver in (["replay", "dpdk"] if args.dpdk else ["replay"]):
                 output = work / f"{name}_{receiver}.bin"
                 if receiver == "replay":
-                    cmd = [ROOT / "pcap_replay_test", pcap, output]
+                    cmd = [ROOT / "build/pcap_replay_test", pcap, output]
                 else:
-                    cmd = [ROOT / "dpdk_rx", "-l", "0", "--no-huge", "-m", "512", "--no-pci",
+                    cmd = [ROOT / "build/dpdk_rx", "-l", "0", "--no-huge", "-m", "512", "--no-pci",
                            "--vdev", f"net_pcap0,rx_pcap={pcap},tx_pcap=/dev/null", "--", output, "16"]
                 result = invoke(cmd, work)
                 require(result.returncode == expected_exit, result)
@@ -84,17 +84,20 @@ def main():
         # expected file. Both targets must propagate the verifier's failure.
         probe = work / "make_probe"
         probe.mkdir()
-        names = ["Makefile", "pcap_replay_test", "pcap_replay_test.c", "rx_core.h", "verify_frames.py"]
+        names = ["Makefile", "build/pcap_replay_test", "tests/pcap_replay_test.c", "dpdk/rx_core.h",
+                 "lab8/__init__.py", "lab8/packets/__init__.py", "lab8/packets/verify_frames.py"]
         if args.dpdk:
-            names.extend(["dpdk_rx", "dpdk_rx.c"])
+            names.extend(["build/dpdk_rx", "dpdk/dpdk_rx.c"])
         for name in names:
+            (probe / name).parent.mkdir(parents=True, exist_ok=True)
             shutil.copy2(ROOT / name, probe / name)
-        gen.write_pcap(probe / "images_inorder.pcap", gen.build_frames_manual(payloads))
+        gen.write_pcap(probe / "data/pcaps/images_inorder.pcap", gen.build_frames_manual(payloads))
         for mode in ("shuffled", "messy"):
-            shutil.copy2(probe / "images_inorder.pcap", probe / f"images_{mode}.pcap")
+            shutil.copy2(probe / "data/pcaps/images_inorder.pcap", probe / f"data/pcaps/images_{mode}.pcap")
         wrong = bytearray(original)
         wrong[0] ^= 1
-        (probe / "frames_original.bin").write_bytes(wrong)
+        (probe / "data/frames").mkdir(parents=True, exist_ok=True)
+        (probe / "data/frames/frames_original.bin").write_bytes(wrong)
         for target in (["test_rx", "run"] if args.dpdk else ["test_rx"]):
             result = invoke(["make", "-o", "pcaps", target, "SUDO="], probe)
             require(result.returncode != 0, result)
