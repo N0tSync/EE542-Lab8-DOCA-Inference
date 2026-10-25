@@ -18,6 +18,9 @@ int main(int argc, char **argv)
         fprintf(stderr, "not a little-endian microsecond pcap file\n"); return 1;
     }
     uint32_t n_frames = argc > 3 ? (uint32_t)atoi(argv[3]) : 16;
+    if (n_frames < 1 || n_frames > MAX_FRAMES) {
+        fprintf(stderr, "expected 1-256 frames\n"); return 2;
+    }
     static struct rx_state st;
     st.port = argc > 4 ? (uint16_t)atoi(argv[4]) : 5000;
     static uint8_t buf[65536];
@@ -25,7 +28,7 @@ int main(int argc, char **argv)
     while (fread(rh, 4, 4, fp) == 4) {
         if (rh[2] > sizeof buf || fread(buf, 1, rh[2], fp) != rh[2]) break;
         rx_handle(&st, buf, rh[2]);
-        if ((uint32_t)rx_complete(&st) >= n_frames) break;
+        if ((uint32_t)rx_complete(&st, n_frames) >= n_frames) break;
     }
     fclose(fp);
     int complete = rx_write(&st, argv[2], n_frames, FRAME_BYTES);

@@ -36,6 +36,8 @@ int main(int argc, char **argv)
     uint32_t n_frames  = argc > 2 ? (uint32_t)atoi(argv[2]) : 16;
     uint16_t port_udp  = argc > 3 ? (uint16_t)atoi(argv[3]) : 5000;
     unsigned idle_ms   = argc > 4 ? (unsigned)atoi(argv[4]) : 500;
+    if (n_frames < 1 || n_frames > MAX_FRAMES || port_udp == 0 || idle_ms == 0)
+        rte_exit(EXIT_FAILURE, "expected 1-256 frames, a nonzero UDP port and positive idle timeout\n");
 
     if (rte_eth_dev_count_avail() == 0)
         rte_exit(EXIT_FAILURE, "no ports: did you pass --vdev?\n");
@@ -87,7 +89,7 @@ int main(int argc, char **argv)
             }
             rte_pktmbuf_free(m);
         }
-        if ((uint32_t)rx_complete(&st) >= n_frames) { why = "all expected frames complete"; break; }
+        if ((uint32_t)rx_complete(&st, n_frames) >= n_frames) { why = "all expected frames complete"; break; }
     }
 
     printf("stopped          : %s\n", why);

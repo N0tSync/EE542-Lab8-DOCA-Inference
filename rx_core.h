@@ -12,8 +12,9 @@
 #define IMG_MAGIC      0x494D4731u   /* "IMG1" */
 #define IMG_HDR_LEN    22
 #define MAX_FRAMES     256
-#define MAX_FRAME_LEN  (4u << 20)
-#define MAX_SEGS       4096
+#define IMG_FRAME_BYTES (224u * 224u * 3u)
+#define IMG_CHUNK_BYTES 1400u
+#define IMG_SEGMENTS    ((IMG_FRAME_BYTES + IMG_CHUNK_BYTES - 1) / IMG_CHUNK_BYTES)
 
 struct frame {
     int       used;
@@ -73,8 +74,13 @@ static void rx_handle(struct rx_state *s, const uint8_t *pkt, uint32_t len)
     uint16_t clen = rd16(h + 16);
     uint32_t fbytes = rd32(h + 18);
 
-    if (nseg == 0 || nseg > MAX_SEGS || seq >= nseg || fbytes == 0 || fbytes > MAX_FRAME_LEN ||
-        clen > plen - IMG_HDR_LEN || (uint64_t)off + clen > fbytes) { s->st.bad_hdr++; return; }
+    /* Fixed lab protocol: these checks ensure distinct sequence IDs cover all
+     * image bytes exactly once, including the shorter final chunk. */
+    if (fbytes != IMG_FRAME_BYTES || nseg != IMG_SEGMENTS || seq >= nseg ||
+        off != (uint32_t)seq * IMG_CHUNK_BYTES) { s->st.bad_hdr++; return; }
+    uint32_t expected_len = fbytes - off;
+    if (expected_len > IMG_CHUNK_BYTES) expected_len = IMG_CHUNK_BYTES;
+    if (clen != expected_len || plen != IMG_HDR_LEN + clen) { s->st.bad_hdr++; return; }
     if (frame_id >= MAX_FRAMES) { s->st.too_many_frames++; return; }
 
     struct frame *f = &s->frames[frame_id];
@@ -94,10 +100,10 @@ static void rx_handle(struct rx_state *s, const uint8_t *pkt, uint32_t len)
 }
 
 /* Number of frames whose chunks have all arrived. */
-static int rx_complete(const struct rx_state *s)
+static int rx_complete(const struct rx_state *s, uint32_t n_frames)
 {
     int n = 0;
-    for (int i = 0; i < MAX_FRAMES; i++)
+    for (uint32_t i = 0; i < n_frames; i++)
         if (s->frames[i].used && s->frames[i].got == s->frames[i].nseg) n++;
     return n;
 }

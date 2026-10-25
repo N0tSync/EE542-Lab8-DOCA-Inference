@@ -1,3 +1,9 @@
 models/
 __pycache__/
 *.pyc
+/dpdk_rx
+/pcap_replay_test
+/images*.pcap
+/frames_original.bin
+/frames_rx*.bin
+/originals/

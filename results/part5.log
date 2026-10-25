@@ -1,0 +1,8 @@
+frames_original.bin: pinned H2D 2408448 bytes, 0.047017 +/- 0.000513 ms, 51.225 GB/s
+frames_rx_inorder.bin: bytes 16/16, classes 16/16
+frames_rx_inorder.bin: pinned H2D 2408448 bytes, 0.044375 +/- 0.001086 ms, 54.275 GB/s
+frames_rx_shuffled.bin: bytes 16/16, classes 16/16
+frames_rx_shuffled.bin: pinned H2D 2408448 bytes, 0.046740 +/- 0.006303 ms, 51.529 GB/s
+frames_rx_messy.bin: bytes 16/16, classes 16/16
+frames_rx_messy.bin: pinned H2D 2408448 bytes, 0.044749 +/- 0.002916 ms, 53.821 GB/s
+Part 5 validation: PASS

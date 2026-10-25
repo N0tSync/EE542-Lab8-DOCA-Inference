@@ -79,9 +79,12 @@ The assignment recommends Ubuntu 22.04 with an L4/T4 cloud GPU and explicitly
 allows Windows NVIDIA GPU users to complete Parts 1-5 under WSL2. This run uses
 Ubuntu 24.04 WSL2 and RTX 5080 with CUDA 13 libraries. The implementation and
 results were checked against Parts 1-2 of `lab8-f26.pdf`, supplied in the parent
-workspace directory. Parts 3-6 and Part 7 have no completion claim here. Part 6
-requires a full GPU cloud virtual machine and remains assigned to the team's
-suitable GPU Docker host.
+workspace directory. Subsequent DPDK reassembly, GPU classification, and pinned
+H2D measurements were also completed on this WSL host; see the [Part 5 guide](part5.md)
+and its linked results. The original environment snapshot above predates those
+tests. Parts 6-7 remain uncompleted. Part 6 specifies a full GPU cloud virtual
+machine. The local shell currently has no Docker CLI or NVIDIA Container
+Toolkit executable in PATH; no local container results are claimed.
 
 The agent sandbox initially blocked NVML access. GPU checks, export, engine
 building, runner validation, and benchmark must run with host GPU access. This

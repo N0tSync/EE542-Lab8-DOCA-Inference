@@ -1,0 +1,8 @@
+PASS GPU preprocessing: black/white RGB tensors match analytic normalized FP16 values
+frames_original.bin: pinned H2D 2408448 bytes, 0.060400 +/- 0.000112 ms, 39.875 GB/s
+/tmp/ee542-part5-validation-3ajp_9zo/changed.bin: bytes 15/16, classes 16/16
+/tmp/ee542-part5-validation-3ajp_9zo/changed.bin: pinned H2D 2408448 bytes, 0.177856 +/- 0.033216 ms, 13.542 GB/s
+Part 5 validation: FAIL
+PASS corrupted input: identical class labels cannot mask a byte mismatch; exit=1
+PASS truncated input: rejected before CUDA inference; exit=2
+All Part 5 validation checks passed.

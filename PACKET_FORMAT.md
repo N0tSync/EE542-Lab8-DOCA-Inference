@@ -26,15 +26,21 @@ Payload = 22-byte header + up to 1,400 bytes of image data. All header fields ar
 - 16 images → **1,728 data packets**.
 
 ## What the receiver checks
-EtherType IPv4, IP version 4, header length, total length, protocol UDP, not a fragment, UDP length, destination port 5000, magic, `seq < nseg`, `offset + length ≤ frame_bytes`, and the same `nseg`/`frame_bytes` as earlier chunks of that frame. A per-chunk "seen" flag drops duplicates. Every drop reason is counted and printed.
+EtherType IPv4, IP version 4, header length, total length, protocol UDP, not a fragment, UDP length, destination port 5000, magic, and the fixed image/chunk format above. In particular, `frame_bytes` must be 150,528, `nseg` must be 108, `offset` must equal `seq * 1400`, and `length` must be exactly 1,400 (728 for the last chunk). The UDP payload must contain exactly the application header and that chunk. Empty, overlapping, short, and inconsistent chunks are rejected before their sequence ID is marked received. A per-chunk "seen" flag drops duplicates. Every drop reason is counted and printed.
 
 ## When the receiver stops
-The pcap port never signals end of file. `dpdk_rx` stops when all expected frames (default 16) are complete, or after 500 ms with no packets, and then reports any missing or incomplete frames.
+The pcap port never signals end of file. `dpdk_rx` stops when all expected frame IDs (default 0-15) are complete, or after 500 ms with no packets, and then reports any missing or incomplete frames. Frames beyond the expected range do not count toward the stop condition. An incomplete result returns a nonzero exit status.
 
 ## Run
 ```bash
 pip install scapy numpy            # the lab asks for Scapy; without it the script builds identical bytes itself
 make test_rx                       # reassembly test without DPDK: in order, shuffled, shuffled + 50 duplicates + 20 other-port
 make run                           # the real DPDK receiver on all three PCAPs (needs DPDK + sudo, Linux)
+python test_packet_pipeline.py --dpdk  # malformed chunks, valid retries, and failure propagation
+make part5                         # DPDK reassembly followed by GPU classification and H2D timing
 ```
 `make run` leaves `frames_rx.bin` (from the shuffled PCAP) for member C's Part 5.
+The verifier runs directly, so a byte mismatch fails both `make test_rx` and
+`make run`. Use `SUDO=` when DPDK pcap access works without root, as on the
+validated WSL host. `PYTHON` and `EAL` can also be overridden for the target host.
+Generated root-level binaries, PCAPs, and frame buffers are ignored by Git.

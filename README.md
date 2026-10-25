@@ -16,4 +16,5 @@ Inference uses pretrained ResNet-18 weights; no model training is required.
 
 Detailed setup, inference usage, and measurements are in
 [the environment notes](docs/environment.md), [the Part 2 guide](docs/part2.md),
+[the packet format](PACKET_FORMAT.md), [the Part 5 guide](docs/part5.md),
 and [the benchmark results](results/part2_results.md).

@@ -1,0 +1,714 @@
+Review timestamp: 2026-10-24T17:23:42.810826-07:00
+Source commit: 3b864f6
+Test workspace: /tmp/ee542-lab8-partb-review.SVAs8n
+
+===== baseline.log =====
+make: Nothing to be done for 'all'.
+python3 generate_pcap.py -o images_inorder.pcap
+16 images x 150,528 bytes, 108 packets per image (last chunk 728 bytes)
+largest frame 1464 bytes on the wire, IP packet 1450 bytes (MTU 1500)
+wrote images_inorder.pcap: 1728 packets (1728 data, 0 duplicates, 0 other-port), in order; originals in frames_original.bin
+python3 generate_pcap.py --shuffle -o images_shuffled.pcap
+16 images x 150,528 bytes, 108 packets per image (last chunk 728 bytes)
+largest frame 1464 bytes on the wire, IP packet 1450 bytes (MTU 1500)
+wrote images_shuffled.pcap: 1728 packets (1728 data, 0 duplicates, 0 other-port), shuffled; originals in frames_original.bin
+python3 generate_pcap.py --shuffle --dups 50 --noise 20 -o images_messy.pcap
+16 images x 150,528 bytes, 108 packets per image (last chunk 728 bytes)
+largest frame 1464 bytes on the wire, IP packet 1450 bytes (MTU 1500)
+wrote images_messy.pcap: 1798 packets (1728 data, 50 duplicates, 20 other-port), shuffled; originals in frames_original.bin
+for m in inorder shuffled messy; do \
+  ./pcap_replay_test images_$m.pcap frames_rx_$m.bin && \
+  python3 verify_frames.py frames_original.bin frames_rx_$m.bin | tail -1 || exit 1; done
+packets received : 1728
+chunks accepted  : 1728
+packets dropped  : 0 (duplicates 0, other port 0, not IPv4 0, not UDP 0, bad length 0, bad magic 0, bad header 0, frame id too large 0)
+complete images  : 16
+16/16 images identical byte for byte
+packets received : 1728
+chunks accepted  : 1728
+packets dropped  : 0 (duplicates 0, other port 0, not IPv4 0, not UDP 0, bad length 0, bad magic 0, bad header 0, frame id too large 0)
+complete images  : 16
+16/16 images identical byte for byte
+packets received : 1798
+chunks accepted  : 1728
+packets dropped  : 70 (duplicates 50, other port 20, not IPv4 0, not UDP 0, bad length 0, bad magic 0, bad header 0, frame id too large 0)
+complete images  : 16
+16/16 images identical byte for byte
+
+===== dpdk_inorder.log =====
+EAL: Detected CPU lcores: 16
+EAL: Detected NUMA nodes: 1
+EAL: Detected shared linkage of DPDK
+EAL: Multi-process socket /run/user/1000//dpdk/rte/mp_socket
+EAL: Selected IOVA mode 'VA'
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc0
+EAL: Driver cannot attach the device (net_tap_vsc0)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc1
+EAL: Driver cannot attach the device (net_tap_vsc1)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc2
+EAL: Driver cannot attach the device (net_tap_vsc2)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc3
+EAL: Driver cannot attach the device (net_tap_vsc3)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc4
+EAL: Driver cannot attach the device (net_tap_vsc4)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc5
+EAL: Driver cannot attach the device (net_tap_vsc5)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc0
+vdev_probe(): failed to initialize net_tap_vsc0 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc1
+vdev_probe(): failed to initialize net_tap_vsc1 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc2
+vdev_probe(): failed to initialize net_tap_vsc2 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc3
+vdev_probe(): failed to initialize net_tap_vsc3 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc4
+vdev_probe(): failed to initialize net_tap_vsc4 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc5
+vdev_probe(): failed to initialize net_tap_vsc5 device
+EAL: Bus (vdev) probe failed.
+TELEMETRY: No legacy callbacks, legacy socket not created
+stopped          : all expected frames complete
+packets received : 1728
+chunks accepted  : 1728
+packets dropped  : 0 (duplicates 0, other port 0, not IPv4 0, not UDP 0, bad length 0, bad magic 0, bad header 0, frame id too large 0)
+complete images  : 16
+expected images  : 16
+receive time     : 0.702 ms (first to last packet)
+wrote frames_dpdk_inorder.bin (16 x 150528 bytes)
+
+===== verify_dpdk_inorder.log =====
+frame  0: identical
+frame  1: identical
+frame  2: identical
+frame  3: identical
+frame  4: identical
+frame  5: identical
+frame  6: identical
+frame  7: identical
+frame  8: identical
+frame  9: identical
+frame 10: identical
+frame 11: identical
+frame 12: identical
+frame 13: identical
+frame 14: identical
+frame 15: identical
+16/16 images identical byte for byte
+
+===== dpdk_shuffled.log =====
+EAL: Detected CPU lcores: 16
+EAL: Detected NUMA nodes: 1
+EAL: Detected shared linkage of DPDK
+EAL: Multi-process socket /run/user/1000//dpdk/rte/mp_socket
+EAL: Selected IOVA mode 'VA'
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc0
+EAL: Driver cannot attach the device (net_tap_vsc0)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc1
+EAL: Driver cannot attach the device (net_tap_vsc1)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc2
+EAL: Driver cannot attach the device (net_tap_vsc2)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc3
+EAL: Driver cannot attach the device (net_tap_vsc3)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc4
+EAL: Driver cannot attach the device (net_tap_vsc4)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc5
+EAL: Driver cannot attach the device (net_tap_vsc5)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc0
+vdev_probe(): failed to initialize net_tap_vsc0 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc1
+vdev_probe(): failed to initialize net_tap_vsc1 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc2
+vdev_probe(): failed to initialize net_tap_vsc2 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc3
+vdev_probe(): failed to initialize net_tap_vsc3 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc4
+vdev_probe(): failed to initialize net_tap_vsc4 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc5
+vdev_probe(): failed to initialize net_tap_vsc5 device
+EAL: Bus (vdev) probe failed.
+TELEMETRY: No legacy callbacks, legacy socket not created
+stopped          : all expected frames complete
+packets received : 1728
+chunks accepted  : 1728
+packets dropped  : 0 (duplicates 0, other port 0, not IPv4 0, not UDP 0, bad length 0, bad magic 0, bad header 0, frame id too large 0)
+complete images  : 16
+expected images  : 16
+receive time     : 0.772 ms (first to last packet)
+wrote frames_dpdk_shuffled.bin (16 x 150528 bytes)
+
+===== verify_dpdk_shuffled.log =====
+frame  0: identical
+frame  1: identical
+frame  2: identical
+frame  3: identical
+frame  4: identical
+frame  5: identical
+frame  6: identical
+frame  7: identical
+frame  8: identical
+frame  9: identical
+frame 10: identical
+frame 11: identical
+frame 12: identical
+frame 13: identical
+frame 14: identical
+frame 15: identical
+16/16 images identical byte for byte
+
+===== dpdk_messy.log =====
+EAL: Detected CPU lcores: 16
+EAL: Detected NUMA nodes: 1
+EAL: Detected shared linkage of DPDK
+EAL: Multi-process socket /run/user/1000//dpdk/rte/mp_socket
+EAL: Selected IOVA mode 'VA'
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc0
+EAL: Driver cannot attach the device (net_tap_vsc0)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc1
+EAL: Driver cannot attach the device (net_tap_vsc1)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc2
+EAL: Driver cannot attach the device (net_tap_vsc2)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc3
+EAL: Driver cannot attach the device (net_tap_vsc3)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc4
+EAL: Driver cannot attach the device (net_tap_vsc4)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc5
+EAL: Driver cannot attach the device (net_tap_vsc5)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc0
+vdev_probe(): failed to initialize net_tap_vsc0 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc1
+vdev_probe(): failed to initialize net_tap_vsc1 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc2
+vdev_probe(): failed to initialize net_tap_vsc2 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc3
+vdev_probe(): failed to initialize net_tap_vsc3 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc4
+vdev_probe(): failed to initialize net_tap_vsc4 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc5
+vdev_probe(): failed to initialize net_tap_vsc5 device
+EAL: Bus (vdev) probe failed.
+TELEMETRY: No legacy callbacks, legacy socket not created
+stopped          : all expected frames complete
+packets received : 1798
+chunks accepted  : 1728
+packets dropped  : 70 (duplicates 50, other port 20, not IPv4 0, not UDP 0, bad length 0, bad magic 0, bad header 0, frame id too large 0)
+complete images  : 16
+expected images  : 16
+receive time     : 0.726 ms (first to last packet)
+wrote frames_dpdk_messy.bin (16 x 150528 bytes)
+
+===== verify_dpdk_messy.log =====
+frame  0: identical
+frame  1: identical
+frame  2: identical
+frame  3: identical
+frame  4: identical
+frame  5: identical
+frame  6: identical
+frame  7: identical
+frame  8: identical
+frame  9: identical
+frame 10: identical
+frame 11: identical
+frame 12: identical
+frame 13: identical
+frame 14: identical
+frame 15: identical
+16/16 images identical byte for byte
+
+===== dpdk_missing_chunk.log =====
+EAL: Detected CPU lcores: 16
+EAL: Detected NUMA nodes: 1
+EAL: Detected shared linkage of DPDK
+EAL: Multi-process socket /run/user/1000//dpdk/rte/mp_socket
+EAL: Selected IOVA mode 'VA'
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc0
+EAL: Driver cannot attach the device (net_tap_vsc0)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc1
+EAL: Driver cannot attach the device (net_tap_vsc1)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc2
+EAL: Driver cannot attach the device (net_tap_vsc2)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc3
+EAL: Driver cannot attach the device (net_tap_vsc3)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc4
+EAL: Driver cannot attach the device (net_tap_vsc4)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc5
+EAL: Driver cannot attach the device (net_tap_vsc5)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc0
+vdev_probe(): failed to initialize net_tap_vsc0 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc1
+vdev_probe(): failed to initialize net_tap_vsc1 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc2
+vdev_probe(): failed to initialize net_tap_vsc2 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc3
+vdev_probe(): failed to initialize net_tap_vsc3 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc4
+vdev_probe(): failed to initialize net_tap_vsc4 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc5
+vdev_probe(): failed to initialize net_tap_vsc5 device
+EAL: Bus (vdev) probe failed.
+TELEMETRY: No legacy callbacks, legacy socket not created
+stopped          : idle timeout
+frame 0 incomplete: 107 of 108 chunks
+packets received : 1727
+chunks accepted  : 1727
+packets dropped  : 0 (duplicates 0, other port 0, not IPv4 0, not UDP 0, bad length 0, bad magic 0, bad header 0, frame id too large 0)
+complete images  : 15
+expected images  : 16
+receive time     : 1.156 ms (first to last packet)
+wrote frames_dpdk_missing_chunk.bin (16 x 150528 bytes)
+
+===== verify_dpdk_missing_chunk.log =====
+frame  0: MISMATCH (147680 bytes differ)
+frame  1: identical
+frame  2: identical
+frame  3: identical
+frame  4: identical
+frame  5: identical
+frame  6: identical
+frame  7: identical
+frame  8: identical
+frame  9: identical
+frame 10: identical
+frame 11: identical
+frame 12: identical
+frame 13: identical
+frame 14: identical
+frame 15: identical
+15/16 images identical byte for byte
+
+===== dpdk_overlapping_offset.log =====
+EAL: Detected CPU lcores: 16
+EAL: Detected NUMA nodes: 1
+EAL: Detected shared linkage of DPDK
+EAL: Multi-process socket /run/user/1000//dpdk/rte/mp_socket
+EAL: Selected IOVA mode 'VA'
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc0
+EAL: Driver cannot attach the device (net_tap_vsc0)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc1
+EAL: Driver cannot attach the device (net_tap_vsc1)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc2
+EAL: Driver cannot attach the device (net_tap_vsc2)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc3
+EAL: Driver cannot attach the device (net_tap_vsc3)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc4
+EAL: Driver cannot attach the device (net_tap_vsc4)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc5
+EAL: Driver cannot attach the device (net_tap_vsc5)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc0
+vdev_probe(): failed to initialize net_tap_vsc0 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc1
+vdev_probe(): failed to initialize net_tap_vsc1 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc2
+vdev_probe(): failed to initialize net_tap_vsc2 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc3
+vdev_probe(): failed to initialize net_tap_vsc3 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc4
+vdev_probe(): failed to initialize net_tap_vsc4 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc5
+vdev_probe(): failed to initialize net_tap_vsc5 device
+EAL: Bus (vdev) probe failed.
+TELEMETRY: No legacy callbacks, legacy socket not created
+stopped          : all expected frames complete
+packets received : 1728
+chunks accepted  : 1728
+packets dropped  : 0 (duplicates 0, other port 0, not IPv4 0, not UDP 0, bad length 0, bad magic 0, bad header 0, frame id too large 0)
+complete images  : 16
+expected images  : 16
+receive time     : 0.730 ms (first to last packet)
+wrote frames_dpdk_overlapping_offset.bin (16 x 150528 bytes)
+
+===== verify_dpdk_overlapping_offset.log =====
+frame  0: MISMATCH (2782 bytes differ)
+frame  1: identical
+frame  2: identical
+frame  3: identical
+frame  4: identical
+frame  5: identical
+frame  6: identical
+frame  7: identical
+frame  8: identical
+frame  9: identical
+frame 10: identical
+frame 11: identical
+frame 12: identical
+frame 13: identical
+frame 14: identical
+frame 15: identical
+15/16 images identical byte for byte
+
+===== dpdk_zero_length.log =====
+EAL: Detected CPU lcores: 16
+EAL: Detected NUMA nodes: 1
+EAL: Detected shared linkage of DPDK
+EAL: Multi-process socket /run/user/1000//dpdk/rte/mp_socket
+EAL: Selected IOVA mode 'VA'
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc0
+EAL: Driver cannot attach the device (net_tap_vsc0)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc1
+EAL: Driver cannot attach the device (net_tap_vsc1)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc2
+EAL: Driver cannot attach the device (net_tap_vsc2)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc3
+EAL: Driver cannot attach the device (net_tap_vsc3)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc4
+EAL: Driver cannot attach the device (net_tap_vsc4)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc5
+EAL: Driver cannot attach the device (net_tap_vsc5)
+EAL: Failed to attach device on primary process
+net_failsafe: sub_device 1 probe failed (File exists)
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc0
+vdev_probe(): failed to initialize net_tap_vsc0 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc1
+vdev_probe(): failed to initialize net_tap_vsc1 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc2
+vdev_probe(): failed to initialize net_tap_vsc2 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc3
+vdev_probe(): failed to initialize net_tap_vsc3 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc4
+vdev_probe(): failed to initialize net_tap_vsc4 device
+tun_alloc(): Unable to set TUNSETIFF for dtap%d: Operation not permitted
+eth_dev_tap_create(): Unable to create TAP interface
+eth_dev_tap_create(): TAP Unable to initialize net_tap_vsc5
+vdev_probe(): failed to initialize net_tap_vsc5 device
+EAL: Bus (vdev) probe failed.
+TELEMETRY: No legacy callbacks, legacy socket not created
+stopped          : all expected frames complete
+packets received : 1728
+chunks accepted  : 1728
+packets dropped  : 0 (duplicates 0, other port 0, not IPv4 0, not UDP 0, bad length 0, bad magic 0, bad header 0, frame id too large 0)
+complete images  : 16
+expected images  : 16
+receive time     : 0.836 ms (first to last packet)
+wrote frames_dpdk_zero_length.bin (16 x 150528 bytes)
+
+===== verify_dpdk_zero_length.log =====
+frame  0: MISMATCH (1389 bytes differ)
+frame  1: identical
+frame  2: identical
+frame  3: identical
+frame  4: identical
+frame  5: identical
+frame  6: identical
+frame  7: identical
+frame  8: identical
+frame  9: identical
+frame 10: identical
+frame 11: identical
+frame 12: identical
+frame 13: identical
+frame 14: identical
+frame 15: identical
+15/16 images identical byte for byte
+
+===== make_failure_probe.log =====
+for m in inorder shuffled messy; do \
+  ./pcap_replay_test images_$m.pcap frames_rx_$m.bin && \
+  python3 verify_frames.py frames_original.bin frames_rx_$m.bin | tail -1 || exit 1; done
+packets received : 1728
+chunks accepted  : 1728
+packets dropped  : 0 (duplicates 0, other port 0, not IPv4 0, not UDP 0, bad length 0, bad magic 0, bad header 0, frame id too large 0)
+complete images  : 16
+15/16 images identical byte for byte
+packets received : 1728
+chunks accepted  : 1728
+packets dropped  : 0 (duplicates 0, other port 0, not IPv4 0, not UDP 0, bad length 0, bad magic 0, bad header 0, frame id too large 0)
+complete images  : 16
+15/16 images identical byte for byte
+packets received : 1798
+chunks accepted  : 1728
+packets dropped  : 70 (duplicates 50, other port 20, not IPv4 0, not UDP 0, bad length 0, bad magic 0, bad header 0, frame id too large 0)
+complete images  : 16
+15/16 images identical byte for byte
+
+===== overlapping_offset.log =====
+packets received : 1728
+chunks accepted  : 1728
+packets dropped  : 0 (duplicates 0, other port 0, not IPv4 0, not UDP 0, bad length 0, bad magic 0, bad header 0, frame id too large 0)
+complete images  : 16
+
+===== zero_length.log =====
+packets received : 1728
+chunks accepted  : 1728
+packets dropped  : 0 (duplicates 0, other port 0, not IPv4 0, not UDP 0, bad length 0, bad magic 0, bad header 0, frame id too large 0)
+complete images  : 16
+
+===== review_summary.json =====
+{
+  "normal_cases": {
+    "inorder": {
+      "packets": 1728,
+      "max_frame_bytes": 1464,
+      "max_ip_bytes": 1450,
+      "replay_identical": true,
+      "dpdk_identical": true
+    },
+    "shuffled": {
+      "packets": 1728,
+      "max_frame_bytes": 1464,
+      "max_ip_bytes": 1450,
+      "replay_identical": true,
+      "dpdk_identical": true
+    },
+    "messy": {
+      "packets": 1798,
+      "max_frame_bytes": 1464,
+      "max_ip_bytes": 1450,
+      "replay_identical": true,
+      "dpdk_identical": true
+    }
+  },
+  "malformed_cases": {
+    "overlapping_offset": {
+      "receiver_exit": 0,
+      "verifier_exit": 1,
+      "receiver_report": [
+        "packets received : 1728",
+        "chunks accepted  : 1728",
+        "packets dropped  : 0 (duplicates 0, other port 0, not IPv4 0, not UDP 0, bad length 0, bad magic 0, bad header 0, frame id too large 0)",
+        "complete images  : 16"
+      ],
+      "verifier_summary": "15/16 images identical byte for byte"
+    },
+    "zero_length": {
+      "receiver_exit": 0,
+      "verifier_exit": 1,
+      "receiver_report": [
+        "packets received : 1728",
+        "chunks accepted  : 1728",
+        "packets dropped  : 0 (duplicates 0, other port 0, not IPv4 0, not UDP 0, bad length 0, bad magic 0, bad header 0, frame id too large 0)",
+        "complete images  : 16"
+      ],
+      "verifier_summary": "15/16 images identical byte for byte"
+    }
+  },
+  "make_failure_probe": {
+    "exit": 0,
+    "verification_summaries": [
+      "15/16 images identical byte for byte",
+      "15/16 images identical byte for byte",
+      "15/16 images identical byte for byte"
+    ]
+  },
+  "missing_chunk_replay": {
+    "exit": 1,
+    "receiver_report": [
+      "frame 0 incomplete: 107 of 108 chunks",
+      "packets received : 1727",
+      "chunks accepted  : 1727",
+      "packets dropped  : 0 (duplicates 0, other port 0, not IPv4 0, not UDP 0, bad length 0, bad magic 0, bad header 0, frame id too large 0)",
+      "complete images  : 15"
+    ]
+  }
+}

@@ -1,0 +1,25 @@
+PASS replay: valid, exit=0, complete=16, bad_headers=0
+PASS dpdk: valid, exit=0, complete=16, bad_headers=0
+PASS replay: missing_chunk, exit=1, complete=15, bad_headers=0
+PASS dpdk: missing_chunk, exit=1, complete=15, bad_headers=0
+PASS replay: overlapping_offset, exit=1, complete=15, bad_headers=1
+PASS dpdk: overlapping_offset, exit=1, complete=15, bad_headers=1
+PASS replay: overlapping_offset_then_valid_retry, exit=0, complete=16, bad_headers=1
+PASS dpdk: overlapping_offset_then_valid_retry, exit=0, complete=16, bad_headers=1
+PASS replay: zero_length, exit=1, complete=15, bad_headers=1
+PASS dpdk: zero_length, exit=1, complete=15, bad_headers=1
+PASS replay: zero_length_then_valid_retry, exit=0, complete=16, bad_headers=1
+PASS dpdk: zero_length_then_valid_retry, exit=0, complete=16, bad_headers=1
+PASS replay: wrong_segment_count, exit=1, complete=15, bad_headers=1
+PASS dpdk: wrong_segment_count, exit=1, complete=15, bad_headers=1
+PASS replay: wrong_frame_size, exit=1, complete=15, bad_headers=1
+PASS dpdk: wrong_frame_size, exit=1, complete=15, bad_headers=1
+PASS replay: short_final_chunk, exit=1, complete=15, bad_headers=1
+PASS dpdk: short_final_chunk, exit=1, complete=15, bad_headers=1
+PASS replay: extra_payload_bytes, exit=1, complete=15, bad_headers=1
+PASS dpdk: extra_payload_bytes, exit=1, complete=15, bad_headers=1
+PASS replay: unexpected_frame_before_last_expected, exit=0, complete=16, bad_headers=0
+PASS dpdk: unexpected_frame_before_last_expected, exit=0, complete=16, bad_headers=0
+PASS make test_rx: byte mismatch propagates failure, exit=2
+PASS make run: byte mismatch propagates failure, exit=2
+All packet pipeline regression checks passed.

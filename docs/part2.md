@@ -2,7 +2,8 @@
 
 Local Part 1 and Part 2 implementation for EE 542 Lab 8. The team is currently
 working on Parts 1-6. This implementation uses an RTX 5080 under WSL2, with the
-`ee542-lab8` Conda environment. Parts 3-6 remain separate team deliverables.
+`ee542-lab8` Conda environment. Parts 3-5 integration is documented in the
+[Part 5 guide](part5.md); Part 6 remains pending.
 
 ## Files
 
@@ -119,9 +120,9 @@ that producer first. If another stream consumes logits, make it wait for the
 caller stream and use `logits.record_stream(consumer)` for allocator safety.
 See the class docstring for the complete lifetime contract.
 
-Part 5 preprocessing stays with the integration module: RGB uint8 HWC data
-becomes contiguous NCHW, scales by 1/255, and normalizes with mean
-`[0.485, 0.456, 0.406]` and std `[0.229, 0.224, 0.225]` on GPU. Already 224x224
-frames can use this pipeline if adopted by the team; it does not include the weights' full
-resize-to-256 and center-crop transform. Apply the same pipeline to original
-and reassembled images.
+Part 5 preprocessing is implemented in `classify_frames.py`. RGB uint8 HWC data
+becomes NCHW on GPU, then the full `IMAGENET1K_V1.transforms()` preset resizes
+the short side to 256, center crops to 224, scales by 1/255, and normalizes with
+mean `[0.485, 0.456, 0.406]` and std `[0.229, 0.224, 0.225]`. It then casts to
+contiguous FP16. This also applies to the already 224x224 transport frames and
+keeps the original and reassembled paths identical. See [the Part 5 guide](part5.md).
